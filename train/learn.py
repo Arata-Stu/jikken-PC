@@ -4,6 +4,7 @@ import torch.optim as optim
 from torch.utils.data import Dataset, DataLoader
 import torch.nn.functional as F
 import torchvision.models as models
+from torchvision.models import resnet18, ResNet18_Weights
 
 import os
 import re
@@ -91,8 +92,9 @@ class CustomResNet(nn.Module):
     def __init__(self, pretrained=True):
         super(CustomResNet, self).__init__()
         # ResNet18をベースとしたモデルを読み込む
-        self.base_model = models.resnet18(pretrained=pretrained)
-
+        # self.base_model = models.resnet18(pretrained=pretrained)
+        weights = ResNet18_Weights.DEFAULT
+        self.base_model = resnet18(weights=weights)
         # ResNetの最終層を置き換える
         num_features = self.base_model.fc.in_features
         self.base_model.fc = nn.Linear(num_features, 3) # x, y座標と半径のための3つの出力
