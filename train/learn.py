@@ -101,5 +101,29 @@ class CustomResNet(nn.Module):
     def forward(self, x):
         return self.base_model(x)
     
+class CustomResNet101(torch.nn.Module):
+    def __init__(self):
+        super(CustomResNet101, self).__init__()
+        # ResNet-50のプリトレーニング済みモデルを読み込む
+        self.resnet = models.resnet101(pretrained=True)
+
+        # ResNetの最後の全結合層をカスタム出力層に置き換える
+        num_features = self.resnet.fc.in_features
+        self.resnet.fc = torch.nn.Linear(num_features, 3)  # x座標, y座標, 半径
+
+    def forward(self, x):
+        return self.resnet(x)
 
 
+class Classificate_Res(nn.Module):
+    def __init__(self, pretrained=True):
+        super(Classificate_Res, self).__init__()
+        # ResNet-50のプリトレーニング済みモデルをロード
+        self.resnet = models.resnet50(pretrained=pretrained)
+        
+        # 最終層を2クラス分類用にカスタマイズ
+        num_features = self.resnet.fc.in_features
+        self.resnet.fc = nn.Linear(num_features, 2)
+
+    def forward(self, x):
+        return self.resnet(x)
