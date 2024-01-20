@@ -101,3 +101,16 @@ class CustomResNet(nn.Module):
 
     def forward(self, x):
         return self.base_model(x)
+    
+class Classificate_Res(nn.Module):
+    def __init__(self, pretrained=True):
+        super(Classificate_Res, self).__init__()
+        # ResNet-50のプリトレーニング済みモデルをロード
+        self.resnet = models.resnet50(pretrained=pretrained)
+        
+        # 最終層を2クラス分類用にカスタマイズ
+        num_features = self.resnet.fc.in_features
+        self.resnet.fc = nn.Linear(num_features, 2)
+
+    def forward(self, x):
+        return self.resnet(x)
