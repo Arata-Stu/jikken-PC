@@ -101,11 +101,11 @@ class CustomResNet(nn.Module):
     def forward(self, x):
         return self.base_model(x)
     
-class CustomResNet101(torch.nn.Module):
+class CustomResNet50(torch.nn.Module):
     def __init__(self):
-        super(CustomResNet101, self).__init__()
+        super(CustomResNet50, self).__init__()
         # ResNet-50のプリトレーニング済みモデルを読み込む
-        self.resnet = models.resnet101(pretrained=True)
+        self.resnet = models.resnet50(pretrained=False)
 
         # ResNetの最後の全結合層をカスタム出力層に置き換える
         num_features = self.resnet.fc.in_features
