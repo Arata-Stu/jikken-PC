@@ -89,12 +89,12 @@ class SimpleCNN_1(nn.Module):
         return x
 
 class CustomResNet(nn.Module):
-    def __init__(self, pretrained=True):
+    def __init__(self, pretrained=False):
         super(CustomResNet, self).__init__()
         # ResNet18をベースとしたモデルを読み込む
-        # self.base_model = models.resnet18(pretrained=pretrained)
-        weights = ResNet18_Weights.DEFAULT
-        self.base_model = resnet18(weights=weights)
+        self.base_model = models.resnet18(pretrained=pretrained)
+        # weights = ResNet18_Weights.DEFAULT
+        # self.base_model = resnet18(weights=weights)
         # ResNetの最終層を置き換える
         num_features = self.base_model.fc.in_features
         self.base_model.fc = nn.Linear(num_features, 3) # x, y座標と半径のための3つの出力
